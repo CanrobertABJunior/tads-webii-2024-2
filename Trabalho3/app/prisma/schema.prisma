@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../dados.db"
+}
+
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  role     String   @default("USER") 
+  password String
+  userPermissions UserPermission[]
+  accessLogs  AccessLog[]
+  profileImage ProfileImage[]
+}
+
+model UserPermission {
+  id      Int    @id @default(autoincrement())
+  route   String
+
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@unique([route, userId])
+}
+
+
+model AccessLog {
+  id          Int      @id @default(autoincrement())
+  
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id])
+
+  route       String   // Rota acessada
+  accessedAt  DateTime @default(now()) // Data/hora do acesso
+  accessGranted Boolean // Indica se o acesso foi concedido ou negado
+}
+
+model ProfileImage {
+  id        Int     @id @default(autoincrement())
+
+  userId  Int      @unique
+  user    User     @relation(fields: [userId], references: [id])
+
+  imageId   String
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <%- include('includes/head-modulos') %>
+    <style>
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 20px 0;
+        }
+        .checkbox-group label {
+            margin-bottom: 10px;
+        }
+    </style>
+    <title>Editar Permissões</title>
+</head>
+<body>
+    <%- include('includes/nav') %>
+    <header>
+        <h1>Editar Permissões de <%= user.name %></h1> 
+    </header>
+    <div class="content">
+        <form action="/editar-permissoes/<%= user.id %>" method="POST">
+            <div class="checkbox-group">
+                <% allModules.forEach(module => { %>
+                    <label>
+                        <input 
+                            type="checkbox" 
+                            name="modules" 
+                            value="<%= module.value %>" 
+                            <% if (userPermissions.includes(module.value)) { %> checked <% } %>>
+                        <%= module.label %>
+                    </label>
+                <% }) %>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar Permissões</button>
+        </form>
+    </div>
+    <%- include('includes/footer') %>
+</body>
+</html>

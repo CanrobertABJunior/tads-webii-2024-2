@@ -1,0 +1,51 @@
+<%- include('includes/head-modulos') %>
+
+<body>
+    <%- include('includes/nav') %>
+    <header>
+        <h1>Bem-vindo, <%= userName %>!</h1> 
+    </header>
+
+    <div class="content">
+        <p>Olá, seja bem-vindo à sua área restrita.</p>
+    </div>
+
+    <!-- Lista de Usuários -->
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Permissoes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i = 0; i < users.length; i++) { %>
+                <tr>
+                    <% if (users[i].profileImage.length) { %>
+                        <% for (let j = 0; j < users[i].profileImage.length; j++) { %>
+                            <td><img class="profile-image-home" src="<%= users[i].profileImage[j].imageId %>" alt=""></td>
+                        <% }%>
+                    <% } else {%>
+                        <td><img class="profile-image-home" src="https://st4.depositphotos.com/11574170/25191/v/450/depositphotos_251916955-stock-illustration-user-glyph-color-icon.jpg" alt=""></td>
+                    <% }%>   
+                    <td><%= users[i].name %></td>
+                    <td><%= users[i].email %></td>
+                    <td><%= users[i].role %></td>
+                    <td>
+                    <% if (users[i].userPermissions.length) { %>
+                        <% for (let k = 0; k < users[i].userPermissions.length; k++) { %>
+                            <%= users[i].userPermissions[k].route + ","%>
+                        <% }%>
+                    <% } else {%>
+                    <% }%>
+                    </td>
+                </tr>
+            <% }%>
+        </tbody>
+    </table>
+    <%- include('includes/footer') %>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <%- include('includes/head-modulos') %>
+    <style>
+        .checkbox-group {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Alinha as opções à esquerda */
+        }
+
+        .checkbox-group label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .checkbox-group.hidden {
+            display: none; /* Oculta os checkboxes dinamicamente */
+        }
+    </style>
+    <title>Criar Novo Usuário</title>
+</head>
+<body>
+    <%- include('includes/nav') %>
+    <div class="content">
+        <div class="create-user-container">
+            <h1 class="create-user-title">Criar Novo Usuário</h1>
+            <form class="create-user-form" action="/registerNew" method="POST">
+                <label class="create-user-form-label" for="name">Nome</label>
+                <input type="text" id="name" name="name" required placeholder="Digite o nome do usuário">
+    
+                <label class="create-user-form-label" for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Digite o email do usuário">
+    
+                <label class="create-user-form-label" for="password">Senha</label>
+                <input type="password" id="password" name="password" required placeholder="Digite a senha">
+    
+                <label for="role">Papel do Usuário</label>
+                <select id="role" name="role" required onchange="toggleModules()">
+                    <% if (sessionUser.role === 'SUPER') { %>
+                        <option value="ADMIN">Admin</option>
+                        <option value="USER">User</option>
+                    <% } else if (sessionUser.role === 'ADMIN') { %>
+                        <option value="USER">User</option>
+                    <% } %>
+                </select>
+                
+                <!-- Campo de seleção com checkboxes -->
+                <div id="modulesContainer" class="checkbox-group hidden">
+                    <label class="create-user-form-label">Módulos de Acesso</label>
+                    <label>
+                        <input type="checkbox" name="modules" value="/relatorios">
+                        Módulo de Relatórios
+                    </label>
+                    <label>
+                        <input type="checkbox" name="modules" value="/financeiro">
+                        Módulo Financeiro
+                    </label>
+                    <label>
+                        <input type="checkbox" name="modules" value="/produtos">
+                        Módulo de Produtos
+                    </label>
+                </div>
+                <input type="submit" value="Criar Usuário">
+            </form>
+        </div>
+    </div>   
+    <script>
+        function toggleModules() {
+            const roleSelect = document.getElementById('role');
+            const modulesContainer = document.getElementById('modulesContainer');
+            
+            // Exibe os checkboxes somente para o papel USER
+            if (roleSelect.value === 'USER') {
+                modulesContainer.classList.remove('hidden');
+            } else {
+                modulesContainer.classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleModules(); // Chama a função para verificar o valor inicial
+        });
+    </script>
+    <%- include('includes/footer') %>
+</body>
+</html>
