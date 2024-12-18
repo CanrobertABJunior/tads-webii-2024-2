@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Perfil do Usuário</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+            }
+    
+            nav {
+                background-color: #4CAF50;
+                overflow: hidden;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+            }
+    
+            nav a {
+                color: white;
+                text-decoration: none;
+                padding: 14px 20px;
+                text-align: center;
+            }
+    
+            nav a:hover {
+                background-color: #45a049;
+            }
+    
+            .nav-left a {
+                margin-right: 10px;
+            }
+    
+            .nav-right a {
+                margin-left: 10px;
+            }
+    
+            header {
+                background-color: #333;
+                color: white;
+                text-align: center;
+                padding: 10px 0;
+            }
+    
+            header h1 {
+                margin: 0;
+                font-size: 24px;
+            }
+    
+            .content {
+                padding: 20px;
+                text-align: center;
+            }
+    
+            footer {
+                text-align: center;
+                padding: 10px;
+                background-color: #333;
+                color: white;
+                position: fixed;
+                width: 100%;
+                bottom: 0;
+            }
+    
+            .profile-header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            .profile-image {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+    
+            .profile-info {
+                margin-top: 20px;
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 5px;
+                justify-items: center;
+                align-items: center;
+            }
+    
+            .profile-info label {
+                font-weight: bold;
+                color: #333;
+                text-align: center;
+                width: 100%;
+            }
+    
+            .profile-info input {
+                width: 20%;
+                padding: 12px;
+                font-size: 1em;
+                border: 0px solid #ccc;
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                color: #333;
+                box-sizing: border-box;
+                text-align: center;
+                transition: border-color 0.3s ease;
+            }
+    
+            .profile-info input[readonly] {
+                background-color: #e0e0e0;
+                cursor: not-allowed;
+            }
+    
+            .profile-info input:focus {
+                outline: none;
+                border-color: #4CAF50;
+                box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
+            }
+    
+            .profile-info input[readonly]:focus {
+                border-color: #ccc;
+                box-shadow: none;
+            }
+    
+            .profile-image-container {
+                position: relative;
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+            }
+    
+            .profile-image {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+    
+            .edit-profile-image {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2em;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                transition: background-color 0.3s;
+            }
+    
+            .edit-profile-image:hover {
+                background-color: #45a049;
+            }
+    
+            .edit-profile-image:focus {
+                outline: none;
+                box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
+            }
+        </style>
+    </head>
+<body>
+    <%- include('includes/nav') %>
+    <header>
+        <h1><%= user.name %></h1>
+    </header>
+
+    <div class="content">
+        <div class="profile-header">
+            <div class="profile-image-container">
+                <!-- Exibe a imagem de perfil ou uma imagem padrão -->
+                <img id="profileImage" src="<%= (user.profileImage && user.profileImage.length > 0) ? '/' + user.profileImage[0].imageId : 'https://st4.depositphotos.com/11574170/25191/v/450/depositphotos_251916955-stock-illustration-user-glyph-color-icon.jpg' %>"
+                     alt="Imagem de Perfil" 
+                     class="profile-image">
+                <button class="edit-profile-image" onclick="document.getElementById('fileInput').click()">
+                    🖉
+                </button>
+                <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="alterarImagem(event)">
+            </div>
+        </div>  
+
+        <div class="profile-info">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" value="<%= user.name %>" readonly>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" value="<%= user.email %>" readonly>
+
+            <label for="role">Role</label>
+            <input type="text" id="role" value="<%= user.role %>" readonly>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 - Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function alterarImagem(event) {
+            const fileInput = event.target;
+            const file = fileInput.files[0]; // Pega o arquivo selecionado
+            if (!file) return;
+
+            // Cria um FormData para enviar o arquivo via AJAX
+            const formData = new FormData();
+            formData.append("foto", file);
+
+            // Envia o arquivo via AJAX
+            fetch('/users/atualizar-perfil-imagem/<%= user.id %>', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Atualiza a imagem de perfil na página sem recarregar
+                    document.getElementById('profileImage').src = "/" + data.imageId;
+                } else {
+                    alert('Erro ao atualizar a imagem');
+                }
+            })
+            .catch(err => {
+                console.error('Erro:', err);
+                alert('Erro ao fazer upload da imagem');
+            });
+        }
+    </script>
+</body>
+</html>

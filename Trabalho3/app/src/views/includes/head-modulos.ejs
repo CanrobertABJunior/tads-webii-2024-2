@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Garante que o corpo ocupe toda a altura da tela */
+        }
+
+        nav {
+            background-color: #4CAF50;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            text-align: center;
+        }
+
+        nav a:hover {
+            background-color: #45a049;
+        }
+
+        .nav-left a {
+            margin-right: 10px;
+        }
+
+        .nav-right a {
+            margin-left: 10px;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .content {
+            flex: 1; /* Faz com que o conteúdo ocupe o espaço restante disponível */
+            padding: 20px;
+            text-align: center;
+        }
+
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            margin-top: auto; /* Garante que o footer sempre estará na parte inferior */
+        }
+
+        /* Estilo para o conteúdo principal */
+        .content {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Centraliza o conteúdo */
+        }
+
+        /* Estilo para a tabela de usuários */
+        table.user-table {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto; /* Centraliza a tabela horizontalmente */
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table.user-table th,
+        table.user-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table.user-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table.user-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        table.user-table td {
+            vertical-align: middle;
+        }
+
+        /* Botões de ação */
+        .btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            margin-top: 20px; /* Espaço entre a tabela e o botão */
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .btn-edit {
+            background-color: #4CAF50;
+            margin-right: 10px;
+        }
+
+        .btn-edit:hover {
+            background-color: #45a049;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+        }
+
+        .btn-delete:hover {
+            background-color: #e53935;
+        }
+
+        /* Estilo para formulários */
+        form {
+            display: inline;
+        }
+
+        .create-user-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza horizontalmente o container */
+            justify-content: center; /* Centraliza verticalmente */
+            margin: 0 auto;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .create-user-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .create-user-form {
+            display: flex;
+            flex-direction: column; /* Coloca os elementos em coluna */
+            align-items: center; /* Centraliza os elementos horizontalmente */
+            gap: 15px; /* Espaço entre os elementos */
+            width: 100%;
+        }
+
+        .create-user-form label {
+            font-weight: bold;
+            color: #333;
+            text-align: center; /* Centraliza o texto dos labels */
+            width: 100%;
+        }
+
+        .create-user-form input,
+        .create-user-form select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .create-user-form input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .create-user-form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .create-user-error {
+            color: #f44336;
+            font-size: 14px;
+            text-align: center; /* Centraliza o texto de erro */
+        }
+
+        .profile-image-home {
+            width: 50px; /* Define a largura da imagem */
+            height: 50px; /* Define a altura da imagem */
+            border-radius: 50%; /* Torna a imagem circular */
+            object-fit: cover; /* Garante que a imagem se ajuste dentro do círculo */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adiciona um leve sombreado */
+            display: block; /* Evita problemas de espaçamento */
+            margin: auto; /* Centraliza a imagem no seu container */
+        }
+
+        .checkbox-group {
+    display: flex;
+    flex-direction: column; /* Coloca os checkboxes e labels em coluna */
+    gap: 10px; /* Espaço entre os itens */
+    align-items: flex-start; /* Alinha à esquerda */
+    margin-top: 15px;
+}
+
+.checkbox-group label {
+    display: flex; /* Usa flexbox para alinhar o texto e o checkbox */
+    align-items: center; /* Centraliza verticalmente */
+    font-size: 14px; /* Tamanho de fonte */
+    cursor: pointer; /* Indica que é clicável */
+    color: #333; /* Cor do texto */
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px; /* Espaço entre o checkbox e o texto */
+    width: 18px; /* Tamanho do checkbox */
+    height: 18px; /* Tamanho do checkbox */
+}
+    </style>
+</head>

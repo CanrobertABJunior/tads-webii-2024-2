@@ -1,0 +1,46 @@
+<%- include('includes/head-modulos') %>
+
+<body>
+    <%- include('includes/nav') %>
+    <header>
+        <h1>Modulo Gestão, apenas super e admin</h1> 
+    </header>
+
+    <div class="content">
+        <p>Olá, seja bem-vindo à sua área restrita.</p>
+
+        <!-- Lista de Usuários -->
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% 
+                    // Filtra os usuários com base no papel do usuário logado
+                    let filteredUsers = [];
+                    filteredUsers = users.filter(user => user.role === 'USER'); // Admin vê apenas usuários com papel "USER"
+                %>
+
+                <% filteredUsers.forEach(user => { %>
+                    <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <!-- Botões para Editar -->
+                            <a href="/editar-usuario/<%= user.id %>" class="btn btn-edit">Editar</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Botão Criar Novo Usuário (Abaixo da Tabela) -->
+        <a href="/cria-novo" class="btn btn-primary">Criar Novo Usuário</a>
+    </div>
+
+    <%- include('includes/footer') %>
+</body>
