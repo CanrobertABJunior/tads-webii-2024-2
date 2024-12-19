@@ -1,5 +1,5 @@
 import express from "express";
-import { createCategory, listCategoriesWithTodos } from "../controllers/categoryController.js";
+import { createCategory, listCategoriesWithTodos, updateCategoryTitle, deleteCategory } from "../controllers/categoryController.js";
 import { validate } from "../middlewares/validationMiddleware.js";
 import { createCategorySchema } from "../validators/categoryValidator.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
@@ -51,6 +51,59 @@ router.post("/", authenticateToken, validate(createCategorySchema), createCatego
  *         description: Erro ao listar categorias
  */
 router.get("/", authenticateToken, listCategoriesWithTodos);
+
+/**
+ * @swagger
+ * /categories/{id}:
+ *   put:
+ *     summary: Atualiza o título de uma categoria
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID da categoria a ser atualizada
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *             required:
+ *               - title
+ *     responses:
+ *       200:
+ *         description: Categoria atualizada com sucesso
+ *       400:
+ *         description: Erro ao atualizar a categoria
+ */
+router.put("/:id", authenticateToken, validate(createCategorySchema), updateCategoryTitle);
+
+/**
+ * @swagger
+ * /categories/{id}:
+ *   delete:
+ *     summary: Exclui uma categoria
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID da categoria a ser excluída
+ *     responses:
+ *       204:
+ *         description: Categoria excluída com sucesso
+ *       400:
+ *         description: Erro ao excluir a categoria
+ */
+router.delete("/:id", authenticateToken, deleteCategory);
 
 export default router;
 

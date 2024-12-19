@@ -197,3 +197,16 @@ export const completeTodo = async (id) => {
     data: { concludeAt: new Date() },
   });
 };
+
+export const updateTodoField = async (id, data) => {
+  return await prisma.todoList.update({
+    where: { id: parseInt(id) },
+    data,
+  });
+};
+
+export const deleteTodoById = async (id) => {
+  return await prisma.todoList.delete({
+    where: { id: parseInt(id) },
+  });
+};

@@ -105,6 +105,33 @@
 			"response": []
 		},
 		{
+			"name": "/categories/{id}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Compras da ceia de natal\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/categories/3"
+			},
+			"response": []
+		},
+		{
+			"name": "/categories/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3000/categories/5"
+			},
+			"response": []
+		},
+		{
 			"name": "/shared/share",
 			"request": {
 				"method": "POST",
@@ -191,6 +218,96 @@
 					}
 				},
 				"url": "http://localhost:3000/todos/2/addCategory"
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/{id}/complete",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": "http://localhost:3000/todos/2/complete"
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/{id}/description",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"description\": \"string\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/todos/4/description"
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/{id}/dateForConclusion",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"dateForConclusion\": \"2024-12-19T01:47:50.993Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/todos/4/dateForConclusion"
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/{id}/category",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"categoryId\": null\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/todos/4/category"
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/{id}/title",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"string\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/todos/4/title"
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3000/todos/4"
 			},
 			"response": []
 		}

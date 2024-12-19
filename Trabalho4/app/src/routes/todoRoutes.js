@@ -1,8 +1,20 @@
 import express from "express";
-import { createTodo, listTodos, listPendingTodos, listOverdueTodos, markTodoComplete, addCategoryTodo } from "../controllers/todoController.js";
+import { 
+    createTodo, 
+    listTodos, 
+    listPendingTodos, 
+    listOverdueTodos, 
+    markTodoComplete, 
+    addCategoryTodo, 
+    updateTodoDescription, 
+    updateTodoDateForConclusion, 
+    updateTodoCategory, 
+    updateTodoTitle, 
+    deleteTodo 
+} from "../controllers/todoController.js";
 import { validate } from "../middlewares/validationMiddleware.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
-import { createTodoSchema } from "../validators/todoValidator.js";
+import { createTodoSchema, deleteTodoSchema, updateTodoCategorySchema, updateTodoDateForConclusionSchema, updateTodoDescriptionSchema, updateTodoTitleSchema } from "../validators/todoValidator.js";
 
 const router = express.Router();
 /**
@@ -231,5 +243,143 @@ router.patch("/:id/addCategory", authenticateToken, addCategoryTodo);
  *         description: Erro ao marcar a tarefa como concluída
  */
 router.patch("/:id/complete", authenticateToken, markTodoComplete);
+
+/**
+ * @swagger
+ * /todos/{id}/description:
+ *   put:
+ *     summary: Atualiza a descrição de uma tarefa
+ *     tags: [Todos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               description:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Descrição atualizada com sucesso
+ *       400:
+ *         description: Erro ao atualizar a descrição
+ */
+router.put("/:id/description", authenticateToken, validate(updateTodoDescriptionSchema), updateTodoDescription);
+
+/**
+ * @swagger
+ * /todos/{id}/dateForConclusion:
+ *   put:
+ *     summary: Atualiza a data de conclusão de uma tarefa
+ *     tags: [Todos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               dateForConclusion:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       200:
+ *         description: Data de conclusão atualizada com sucesso
+ *       400:
+ *         description: Erro ao atualizar a data de conclusão
+ */
+router.put("/:id/dateForConclusion", authenticateToken, validate(updateTodoDateForConclusionSchema), updateTodoDateForConclusion);
+
+/**
+ * @swagger
+ * /todos/{id}/category:
+ *   put:
+ *     summary: Atualiza ou remove a categoria de uma tarefa
+ *     tags: [Todos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               categoryId:
+ *                 type: integer
+ *                 description: ID da categoria (null para remover)
+ *     responses:
+ *       200:
+ *         description: Categoria atualizada com sucesso
+ *       400:
+ *         description: Erro ao atualizar a categoria
+ */
+router.put("/:id/category", authenticateToken, validate(updateTodoCategorySchema), updateTodoCategory);
+
+/**
+ * @swagger
+ * /todos/{id}/title:
+ *   put:
+ *     summary: Atualiza o título de uma tarefa
+ *     tags: [Todos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Título atualizado com sucesso
+ *       400:
+ *         description: Erro ao atualizar o título
+ */
+router.put("/:id/title", authenticateToken, validate(updateTodoTitleSchema), updateTodoTitle);
+
+/**
+ * @swagger
+ * /todos/{id}:
+ *   delete:
+ *     summary: Exclui uma tarefa
+ *     tags: [Todos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Tarefa excluída com sucesso
+ *       400:
+ *         description: Erro ao excluir a tarefa
+ */
+router.delete("/:id", authenticateToken, validate(deleteTodoSchema),  deleteTodo);
 
 export default router;
